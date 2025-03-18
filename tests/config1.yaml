@@ -1,0 +1,3 @@
+arg1: value1 # Set arg1 value to value1
+arg3:
+  arg4: !ctx relu

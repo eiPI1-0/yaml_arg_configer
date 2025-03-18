@@ -1,0 +1,4 @@
+import: !ipt
+  torch.nn:
+    relu: ReLU
+    gelu: GELU

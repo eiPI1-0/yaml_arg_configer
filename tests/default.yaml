@@ -1,0 +1,6 @@
+arg1:
+  default: ~ # Set arg1 default value to None
+  help: "Help documentation for arg1"
+arg2:
+  default: ~ # Set arg2 default value to None
+  help: "Help documentation for arg2"

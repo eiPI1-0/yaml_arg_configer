@@ -54,7 +54,9 @@ from yaml_arg_configer import YamlArgParser
 yaml_parser = YamlArgParser()
 cmd_args = yaml_parser.parse_cmd_args()
 # return config with dict format by default
-print(yaml_parser.parse_args(cmd_args))
+args = yaml_parser.parse_args(cmd_args)
+
+print(args)
 # config with argparse.Namespace format
 print(yaml_parser.get_args())
 ```

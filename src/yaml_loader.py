@@ -127,6 +127,15 @@ def load_yaml(yaml_path, Loader=ConfigLoader, **kwargs):
 
 
 def load_ctx_from_yaml(yaml_path, import_tag='import', temp=True, replace=True, **kwargs):
+    """
+    Load and manage context from a YAML file.
+
+    :param yaml_path: Path to the YAML file.
+    :param import_tag: The tag used in YAML for importing modules.
+    :param temp: If True, updates the temporary context. Otherwise, updates the main context.
+    :param replace: If True, replaces the current context with the new one. Otherwise, merges it.
+    :param kwargs: Additional keyword arguments to pass to load_yaml.
+    """
     ctx_config = load_yaml(yaml_path=yaml_path, Loader=ConfigLoader, **kwargs)
     attrs = ctx_config.pop(import_tag)
     ctx_config.update(attrs)

@@ -9,13 +9,13 @@ __all__ = ["YamlArgParser"]
 
 class YamlArgParser:
     """
-    A class to parse arguments from YAML files and command line, combining them with default values.
-    
+    Parses arguments from YAML files and command line, combining them with default values.
+
     Attributes:
-        default_name (str): Key used in the YAML files for default values.
-        help_name (str): Key used in the YAML files for help documentation.
-        defaults (dict): Parsed default configurations from the default YAML file.
-        args (dict): Dictionary to hold the final set of arguments.
+        default_name (str): Key in YAML for default values.
+        help_name (str): Key in YAML for help documentation.
+        defaults (dict): Default configurations from the default YAML file.
+        args (dict): Final set of parsed arguments.
     """
 
     default_name = 'default'
@@ -23,9 +23,9 @@ class YamlArgParser:
 
     def __init__(self, parser=None, default_yaml=None):
         """
-        Initialize the YamlArgParser with a path to a default configuration YAML file.
+        Initializes the YamlArgParser with a path to a default configuration YAML file.
 
-        :param parser: An existing argparse.ArgumentParser instance (optional).
+        :param parser: Existing argparse.ArgumentParser instance (optional).
         :param default_yaml: Path to the default configuration YAML file.
         """
         self.arg_parser = self._get_arg_parser(parser=parser, default_yaml=default_yaml)
@@ -35,9 +35,9 @@ class YamlArgParser:
     @classmethod
     def _get_arg_parser(cls, parser=None, default_yaml=None):
         """
-        Create and configure an argparse.ArgumentParser for parsing command-line arguments.
+        Creates and configures an argparse.ArgumentParser for parsing command-line arguments.
 
-        :param parser: An existing argparse.ArgumentParser instance (optional).
+        :param parser: Existing argparse.ArgumentParser instance (optional).
         :param default_yaml: Default path to the configuration YAML file.
         :return: Configured argparse.ArgumentParser instance.
         """
@@ -50,20 +50,21 @@ class YamlArgParser:
                             help="Help documentation for specific arguments (multiple allowed).")
         parser.add_argument("--docs", action="store_true",
                             help="Print help documentation for all arguments.")
-        parser.add_argument("--dc", type=str, default=default_yaml, dest='default_yaml', 
+        parser.add_argument("--dc", type=str, default=default_yaml, dest='default_yaml',
                             help="Path to the default YAML configuration file.")
-        parser.add_argument("-ctx", type=str, default=None, dest='ctx_yaml', help="Path to the context YAML configuration file.")
-        parser.add_argument("--strict", action="store_true",
-                            help="Constraint user configuration configured in the default_yaml file.")
+        parser.add_argument('-ctx', type=str, default=None, dest='ctx_yaml',
+                            help="Path to the context YAML configuration file.")
+        parser.add_argument('--strict', action="store_true",
+                            help="Constraints user configuration defined in the default_yaml file.")
         return parser
 
     def add_argument(self, *args, **kwargs):
-        """Add an argument to the parser."""
+        """Adds an argument to the parser."""
         self.arg_parser.add_argument(*args, **kwargs)
 
     def parse_default(self, default_yaml):
         """
-        Parse the default configuration YAML file and set up initial arguments with their default values.
+        Parses the default configuration YAML file and sets up initial arguments with their default values.
 
         :param default_yaml: Path to the default configuration YAML file.
         """
@@ -72,7 +73,7 @@ class YamlArgParser:
 
     def update_from_dict(self, args, strict=True):
         """
-        Update the arguments dictionary with a new set of arguments provided as a dictionary.
+        Updates the arguments dictionary with a new set of arguments provided as a dictionary.
         Validates that each key exists in the defaults if `strict` is True.
 
         :param args: Dictionary containing argument names and their values to be updated.
@@ -88,7 +89,7 @@ class YamlArgParser:
 
     def update_from_yaml(self, yaml_path, strict=True):
         """
-        Parse a YAML file and update the arguments dictionary with its content.
+        Parses a YAML file and updates the arguments dictionary with its content.
 
         :param yaml_path: Path to the YAML file containing updated arguments.
         :param strict: Boolean flag indicating whether to enforce existence of keys in defaults.
@@ -98,7 +99,7 @@ class YamlArgParser:
 
     def parse_args_dict(self, yaml_paths=None, strict=True):
         """
-        Update the arguments dictionary from a list of YAML file paths.
+        Updates the arguments dictionary from a list of YAML file paths.
 
         :param yaml_paths: List of paths to YAML files containing updated arguments.
         :return: The final set of parsed arguments as a dictionary.
@@ -110,22 +111,22 @@ class YamlArgParser:
 
     def get_args(self):
         """
-        Convert the arguments dictionary into an argparse Namespace object.
+        Converts the arguments dictionary into an argparse Namespace object.
 
         :return: An argparse.Namespace object containing all the final set of parsed arguments.
         """
         return argparse.Namespace(**self.args)
 
     def parse_cmd_args(self):
-        """Parse command-line arguments."""
+        """Parses command-line arguments."""
         return self.arg_parser.parse_args()
 
     def parse_args(self, cmd_args):
         """
-        Parse arguments from a list of YAML files and command-line inputs.
+        Parses arguments from a list of YAML files and command-line inputs.
 
         :param cmd_args: Namespace containing command-line arguments.
-        :return: dict with the final set of parsed arguments.
+        :return: Dictionary with the final set of parsed arguments.
         """
         ctx_yaml = cmd_args.ctx_yaml
         if ctx_yaml is not None:
@@ -147,7 +148,7 @@ class YamlArgParser:
 
     def save_config(self, out_path):
         """
-        Save the current set of arguments to a YAML file at the specified path.
+        Saves the current set of arguments to a YAML file at the specified path.
 
         :param out_path: Path where the output configuration YAML file will be saved.
         """
@@ -155,16 +156,16 @@ class YamlArgParser:
             yaml.safe_dump(self.args, f)
 
     def __getitem__(self, key):
-        """Allow dictionary-like access to the arguments."""
+        """Allows dictionary-like access to the arguments."""
         return self.args[key]
 
     def __setitem__(self, key, value):
-        """Allow dictionary-like assignment to the arguments."""
+        """Allows dictionary-like assignment to the arguments."""
         self.args[key] = value
 
     def help(self, arg_name=None):
         """
-        Retrieve help documentation for a specific argument or all arguments.
+        Retrieves help documentation for a specific argument or all arguments.
 
         :param arg_name: Name of the argument to retrieve help documentation for (optional).
         :return: Help documentation for the specified argument or all arguments.

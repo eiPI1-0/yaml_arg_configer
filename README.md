@@ -49,20 +49,14 @@ arg2: value2 # Set arg2 value to value2
 Use the `parse_args` function to parse command-line arguments:
 
 ```python
-from yaml_arg_configer import parse_args
+from yaml_arg_configer import YamlArgParser
 
-yaml_parser = parse_args()  # --default_yaml need to pass in command line 
-# or
-yaml_parser = parse_args(default_yaml='defaults.yaml')
-
-# custom more args in command line
-from yaml_arg_configer import parse_args, get_arg_parser
-parser = get_arg_parser(default_yaml=...)  # optional default_yaml
-parser.add_argument("--test_arg", type=str, ...)
-yaml_parser = parse_args(parser=parser)
-yaml_parser.update_from_dict(dict(
-  test_arg=args.test_arg
-))
+yaml_parser = YamlArgParser()
+cmd_args = yaml_parser.parse_cmd_args()
+# return config with dict format by default
+print(yaml_parser.parse_args(cmd_args))
+# config with argparse.Namespace format
+print(yaml_parser.get_args())
 ```
 
 ### Command-Line Usage
@@ -70,14 +64,16 @@ yaml_parser.update_from_dict(dict(
 Run your script with configuration options:
 
 ```bash
-python my_script.py -d configs -c config1 config2
+python my_script.py -dc defaults.yaml -d configs -c config1 config2
 ```
 
 - `-d`, `--cfg_dir`: Directory containing configuration files.
 - `-c`, `--cfg`: Names of configuration files to use (without `.yaml` extension).
+- `-dc`, `--default_yaml`: Path to the default yaml file, it's optional when a path is passed in YamlArgParser()
+- `-ctx`, `--ctx_yaml`: Path to the context yaml file, it's optional
+- `--strict`: Constraints user configuration defined in the default_yaml file
 - `--doc`: Get help documentation for a specific argument.
 - `--docs`: Print help documentation for all arguments.
-- `--default_yaml`: Path to the default yaml file, it's optional when a path is passed in parse_args()
 
 ### Accessing Configurations
 
@@ -86,6 +82,7 @@ Retrieve parsed configurations using:
 ```python
 print(yaml_parser.get_args_dict())
 print(yaml_parser.get_args())
+print(yaml_parser['arg1'])
 ```
 
 ### Saving Configurations

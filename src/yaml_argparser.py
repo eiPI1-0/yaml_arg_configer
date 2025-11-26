@@ -143,9 +143,11 @@ class YamlArgParser:
             self.parse_default(default_yaml=default_yaml)
             if cmd_args.docs:
                 print(self.help())
+                return None
             elif cmd_args.doc:
                 for arg_name in cmd_args.doc:
                     print(self.help(arg_name))
+                    return None
         cfg_dir = Path(cmd_args.cfg_dir)
         yaml_paths = [cfg_dir / f'{name}.yaml' for name in cmd_args.cfg]
         return self.parse_args_dict(yaml_paths, strict=strict)

@@ -70,7 +70,10 @@ def import_loader(loader, node):
     for m, attrs in params.items():
         module = import_module(name=m)  # load Python module
         for name, attr in attrs.items() if isinstance(attrs, dict) else zip(attrs, attrs):
-            context[name] = getattr(module, attr)
+            ctx = module
+            for a in attr.split('.'):
+                ctx = getattr(ctx, a)
+            context[name] = ctx
     return context
 
 

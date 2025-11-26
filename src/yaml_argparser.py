@@ -21,19 +21,23 @@ class YamlArgParser:
     default_name = 'default'
     help_name = 'help'
 
-    def __init__(self, parser=None, default_yaml=None):
+    def __init__(self, parser=None, default_yaml=None, ctx_yaml=None):
         """
         Initializes the YamlArgParser with a path to a default configuration YAML file.
 
         :param parser: Existing argparse.ArgumentParser instance (optional).
         :param default_yaml: Path to the default configuration YAML file.
         """
-        self.arg_parser = self._get_arg_parser(parser=parser, default_yaml=default_yaml)
+        self.arg_parser = self._get_arg_parser(
+            parser=parser,
+            default_yaml=default_yaml,
+            ctx_yaml=ctx_yaml
+        )
         self.defaults = {}
         self.args = {}
 
     @classmethod
-    def _get_arg_parser(cls, parser=None, default_yaml=None):
+    def _get_arg_parser(cls, parser=None, default_yaml=None, ctx_yaml=None):
         """
         Creates and configures an argparse.ArgumentParser for parsing command-line arguments.
 
@@ -52,7 +56,7 @@ class YamlArgParser:
                             help="Print help documentation for all arguments.")
         parser.add_argument("--dc", type=str, default=default_yaml, dest='default_yaml',
                             help="Path to the default YAML configuration file.")
-        parser.add_argument('-ctx', type=str, default=None, dest='ctx_yaml',
+        parser.add_argument('-ctx', type=str, default=ctx_yaml, dest='ctx_yaml',
                             help="Path to the context YAML configuration file.")
         parser.add_argument('--strict', action="store_true",
                             help="Constraints user configuration defined in the default_yaml file.")
